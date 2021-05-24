@@ -181,7 +181,8 @@ err_clk:
 /*
  * Routine to disable clocks
  */
-static int st21nfc_clock_deselect(struct st21nfc_device *st21nfc_dev) {
+static int st21nfc_clock_deselect(struct st21nfc_device *st21nfc_dev)
+{
 	/* if NULL we assume external crystal and dont fail */
 	if (IS_ERR_OR_NULL(st21nfc_dev->s_clk))
 		return 0;
@@ -272,7 +273,7 @@ static int st21nfc_loc_set_polaritymode(
 	st21nfc_dev->irq_enabled = true;
 
 	ret = devm_request_irq(dev, client->irq, st21nfc_dev_irq_handler,
-						   st21nfc_dev->polarity_mode | IRQF_NO_SUSPEND,
+						   st21nfc_dev->polarity_mode,
 						   client->name, st21nfc_dev);
 
 	if (ret) {
@@ -900,15 +901,11 @@ static ssize_t power_stats_show(struct device *dev,
 		"\nError transition header --> payload state machine: 0x%llx\n"
 		"Error transition from an Active state when not in Idle state: 0x%llx\n"
 		"Error transition from Idle state to Idle state: 0x%llx\n"
-      "Warning transition from Active Reader/Writer state to Idle state: "
-      "0x%llx\n"
-      "Error transition from Active state to Active state: 0x%llx\n"
-      "Error transition from Idle state to Active state with notification: "
-      "0x%llx\n"
-      "Error transition from Active Reader/Writer state to Active "
-      "Reader/Writer state: 0x%llx\n"
-      "Error transition from Idle state to Active Reader/Writer state with "
-      "notification: 0x%llx\n"
+		"Warning transition from Active Reader/Writer state to Idle state: 0x%llx\n"
+		"Error transition from Active state to Active state: 0x%llx\n"
+		"Error transition from Idle state to Active state with notification: 0x%llx\n"
+		"Error transition from Active Reader/Writer state to Active Reader/Writer state: 0x%llx\n"
+		"Error transition from Idle state to Active Reader/Writer state with notification: 0x%llx\n"
 		"\nTotal uptime: 0x%llx Cumulative modes time: 0x%llx\n",
 		data->c_pw_states[ST21NFC_IDLE].count, idle_duration,
 		data->c_pw_states[ST21NFC_IDLE].last_entry,
@@ -1193,7 +1190,7 @@ MODULE_DEVICE_TABLE(of, st21nfc_of_match);
 static const struct dev_pm_ops st21nfc_pm_ops = {
 	SET_SYSTEM_SLEEP_PM_OPS(st21nfc_suspend, st21nfc_resume)};
 
-static const struct acpi_device_id st21nfc_acpi_match[] = {{"SMO2104"}, {}};
+static const struct acpi_device_id st21nfc_acpi_match[] = {{"SMO2104"}, {} };
 MODULE_DEVICE_TABLE(acpi, st21nfc_acpi_match);
 // #elif (defined(ST21NFCD_MTK54))
 // static const struct acpi_device_id st21nfc_acpi_match[] = {{"SMO2104"}, {}};
