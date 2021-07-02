@@ -1006,29 +1006,31 @@ static int st54spi_parse_dt(struct device *dev, struct st54spi_data *pdata)
 	}
 
 	// We need to use pinmux to control NSS
-	pdata->pctrl = devm_pinctrl_get(dev);
-	if (IS_ERR(pdata->pctrl)) {
-		dev_err(dev, "%s: Unable to allocate pinctrl: %d\n",
-				__FILE__, PTR_ERR(pdata->pctrl));
-		return -EINVAL;
-	}
+	if (pdata->power_or_nreset_gpio_mode == POWER_MODE_ST54H) {
+		pdata->pctrl = devm_pinctrl_get(dev);
+		if (IS_ERR(pdata->pctrl)) {
+			dev_err(dev, "%s: Unable to allocate pinctrl: %d\n",
+					__FILE__, PTR_ERR(pdata->pctrl));
+			return -EINVAL;
+		}
 
-	pdata->pctrl_mode_spi = pinctrl_lookup_state(pdata->pctrl,
-												"qupv3_se8_spi_active");
-	if (IS_ERR(pdata->pctrl_mode_spi)) {
-		dev_err(dev, "%s: Unable to find qupv3_se8_spi_active: %d\n",
-			__FILE__, PTR_ERR(pdata->pctrl_mode_spi));
-		return -EINVAL;
-	}
+		pdata->pctrl_mode_spi = pinctrl_lookup_state(pdata->pctrl,
+													"qupv3_se8_spi_active");
+		if (IS_ERR(pdata->pctrl_mode_spi)) {
+			dev_err(dev, "%s: Unable to find qupv3_se8_spi_active: %d\n",
+				__FILE__, PTR_ERR(pdata->pctrl_mode_spi));
+			return -EINVAL;
+		}
 
-	pdata->pctrl_mode_idle = pinctrl_lookup_state(pdata->pctrl,
-												"qupv3_se8_spi_sleep");
-	if (IS_ERR(pdata->pctrl_mode_idle)) {
-		dev_err(dev, "%s: Unable to find qupv3_se8_spi_sleep: %d\n",
-			__FILE__, PTR_ERR(pdata->pctrl_mode_idle));
-		return -EINVAL;
+		pdata->pctrl_mode_idle = pinctrl_lookup_state(pdata->pctrl,
+													"qupv3_se8_spi_sleep");
+		if (IS_ERR(pdata->pctrl_mode_idle)) {
+			dev_err(dev, "%s: Unable to find qupv3_se8_spi_sleep: %d\n",
+				__FILE__, PTR_ERR(pdata->pctrl_mode_idle));
+			return -EINVAL;
+		}
+		dev_info(dev, "[dsc]%s : pinctrl initialized\n", __func__);
 	}
-	dev_info(dev, "[dsc]%s : pinctrl initialized\n", __func__);
 
 	dev_info(dev, "[dsc]%s : get power_or_nreset_gpio[%d]\n",
 				__func__, pdata->power_or_nreset_gpio);
