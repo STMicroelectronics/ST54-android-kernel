@@ -24,8 +24,8 @@
 // Keep compatibility with older user applications.
 #define ST21NFC_LEGACY_GET_WAKEUP _IOR(ST21NFC_MAGIC, 0x01, unsigned int)
 #define ST21NFC_LEGACY_PULSE_RESET _IOR(ST21NFC_MAGIC, 0x02, unsigned int)
-#define ST21NFC_LEGACY_SET_POLARITY_RISING \
-_IOR(ST21NFC_MAGIC, 0x03, unsigned int)
+#define ST21NFC_LEGACY_SET_POLARITY_RISING                                     \
+	_IOR(ST21NFC_MAGIC, 0x03, unsigned int)
 #define ST21NFC_LEGACY_SET_POLARITY_HIGH _IOR(ST21NFC_MAGIC, 0x05, unsigned int)
 #define ST21NFC_LEGACY_GET_POLARITY _IOR(ST21NFC_MAGIC, 0x07, unsigned int)
 #define ST21NFC_LEGACY_RECOVERY _IOR(ST21NFC_MAGIC, 0x08, unsigned int)
